@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="Movies" EntityType="Model.Store.Movies" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UploadedPosters" EntityType="Model.Store.UploadedPosters" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="People" EntityType="Model.Store.People" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MoviePerson" EntityType="Model.Store.MoviePerson" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="MovieUploadedPosters" Association="Model.Store.MovieUploadedPosters">
+      <End Role="Movie" EntitySet="Movies" />
+      <End Role="UploadedPosters" EntitySet="UploadedPosters" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MoviePerson_Movie" Association="Model.Store.FK_MoviePerson_Movie">
+      <End Role="Movie" EntitySet="Movies" />
+      <End Role="MoviePerson" EntitySet="MoviePerson" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MoviePerson_Person" Association="Model.Store.FK_MoviePerson_Person">
+      <End Role="Person" EntitySet="People" />
+      <End Role="MoviePerson" EntitySet="MoviePerson" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Movies">
+    <Key>
+      <PropertyRef Name="IDMovie" />
+    </Key>
+    <Property Name="IDMovie" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Genre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Duration" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UploadedPosters">
+    <Key>
+      <PropertyRef Name="IDUploadedPoster" />
+    </Key>
+    <Property Name="IDUploadedPoster" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="ContentType" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Content" Type="varbinary(max)" Nullable="false" />
+    <Property Name="MovieIDMovie" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="People">
+    <Key>
+      <PropertyRef Name="IDPerson" />
+    </Key>
+    <Property Name="IDPerson" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Firstname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Lastname" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MoviePerson">
+    <Key>
+      <PropertyRef Name="Movies_IDMovie" />
+      <PropertyRef Name="People_IDPerson" />
+    </Key>
+    <Property Name="Movies_IDMovie" Type="int" Nullable="false" />
+    <Property Name="People_IDPerson" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="MovieUploadedPosters">
+    <End Role="Movie" Type="Model.Store.Movies" Multiplicity="1" />
+    <End Role="UploadedPosters" Type="Model.Store.UploadedPosters" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Movie">
+        <PropertyRef Name="IDMovie" />
+      </Principal>
+      <Dependent Role="UploadedPosters">
+        <PropertyRef Name="MovieIDMovie" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MoviePerson_Movie">
+    <End Role="Movie" Type="Model.Store.Movies" Multiplicity="1" />
+    <End Role="MoviePerson" Type="Model.Store.MoviePerson" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Movie">
+        <PropertyRef Name="IDMovie" />
+      </Principal>
+      <Dependent Role="MoviePerson">
+        <PropertyRef Name="Movies_IDMovie" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MoviePerson_Person">
+    <End Role="MoviePerson" Type="Model.Store.MoviePerson" Multiplicity="*" />
+    <End Role="Person" Type="Model.Store.People" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="IDPerson" />
+      </Principal>
+      <Dependent Role="MoviePerson">
+        <PropertyRef Name="People_IDPerson" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Movies" EntityType="Model.Movie" />
+          <EntitySet Name="UploadedPosters" EntityType="Model.UploadedPosters" />
+          <AssociationSet Name="MovieUploadedPosters" Association="Model.MovieUploadedPosters">
+            <End Role="Movie" EntitySet="Movies" />
+            <End Role="UploadedPosters" EntitySet="UploadedPosters" />
+          </AssociationSet>
+          <EntitySet Name="People" EntityType="Model.Person" />
+          <AssociationSet Name="MoviePerson" Association="Model.MoviePerson">
+            <End Role="Movie" EntitySet="Movies" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Movie">
+          <Key>
+            <PropertyRef Name="IDMovie" />
+          </Key>
+          <Property Name="IDMovie" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" />
+          <Property Name="Genre" Type="String" Nullable="false" />
+          <Property Name="Duration" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UploadedPosters" Relationship="Model.MovieUploadedPosters" FromRole="Movie" ToRole="UploadedPosters" />
+          <NavigationProperty Name="People" Relationship="Model.MoviePerson" FromRole="Movie" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="UploadedPosters">
+          <Key>
+            <PropertyRef Name="IDUploadedPoster" />
+          </Key>
+          <Property Name="IDUploadedPoster" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" />
+          <Property Name="ContentType" Type="String" Nullable="false" MaxLength="20" />
+          <Property Name="Content" Type="Binary" Nullable="false" />
+          <NavigationProperty Name="Movie" Relationship="Model.MovieUploadedPosters" FromRole="UploadedPosters" ToRole="Movie" />
+          <Property Name="MovieIDMovie" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="MovieUploadedPosters">
+          <End Type="Model.Movie" Role="Movie" Multiplicity="1" />
+          <End Type="Model.UploadedPosters" Role="UploadedPosters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movie">
+              <PropertyRef Name="IDMovie" />
+            </Principal>
+            <Dependent Role="UploadedPosters">
+              <PropertyRef Name="MovieIDMovie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="IDPerson" />
+          </Key>
+          <Property Name="IDPerson" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Firstname" Type="String" Nullable="false" />
+          <Property Name="Lastname" Type="String" Nullable="false" />
+          <NavigationProperty Name="Movies" Relationship="Model.MoviePerson" FromRole="Person" ToRole="Movie" />
+        </EntityType>
+        <Association Name="MoviePerson">
+          <End Type="Model.Movie" Role="Movie" Multiplicity="*" />
+          <End Type="Model.Person" Role="Person" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="ModelContainer">
+    <EntitySetMapping Name="Movies">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Movie)">
+        <MappingFragment StoreEntitySet="Movies">
+          <ScalarProperty Name="IDMovie" ColumnName="IDMovie" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Genre" ColumnName="Genre" />
+          <ScalarProperty Name="Duration" ColumnName="Duration" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UploadedPosters">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.UploadedPosters)">
+        <MappingFragment StoreEntitySet="UploadedPosters">
+          <ScalarProperty Name="IDUploadedPoster" ColumnName="IDUploadedPoster" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="MovieIDMovie" ColumnName="MovieIDMovie" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="People">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Person)">
+        <MappingFragment StoreEntitySet="People">
+          <ScalarProperty Name="IDPerson" ColumnName="IDPerson" />
+          <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+          <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="MoviePerson" TypeName="Model.MoviePerson" StoreEntitySet="MoviePerson">
+      <EndProperty Name="Movie">
+        <ScalarProperty Name="IDMovie" ColumnName="Movies_IDMovie" />
+      </EndProperty>
+      <EndProperty Name="Person">
+        <ScalarProperty Name="IDPerson" ColumnName="People_IDPerson" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,56 @@
+﻿@model Movies.Movie
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Movie</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        @Html.HiddenFor(model => model.IDMovie)
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Genre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        @foreach (var uploadedPoster in Model.UploadedPosters)
+        {
+            <dt>
+                @uploadedPoster.Name
+            </dt>
+
+            <dd style="margin-top:10px">
+                <img src="~/Files?id=@uploadedPoster.IDUploadedPoster" alt="picture" width="300" height="200" />
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IDMovie }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

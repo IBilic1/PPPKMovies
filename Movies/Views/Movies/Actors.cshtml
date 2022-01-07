@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Movies.Person>
+
+@{
+    ViewBag.Title = "Actors";
+    var ddlActors = new SelectList(items: ViewBag.otherActors, dataTextField: "FullName", dataValueField: "IDPerson");
+    var movieID = TempData["movieID"];
+}
+
+<h2>Actors</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.Label("Add actor:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList(name: "IDPerson", selectList: ddlActors, htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div style="margin-top:10px;margin-bottom:10px" class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Add Actor" title="Add" formmethod="post" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm())
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IDPerson)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Firstname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lastname)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IDPerson)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Firstname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lastname)
+                </td>
+                <td>
+                    @Ajax.ActionLink("Delete actor", "Delete", "ActorMovie",
+                              new { actorId = item.IDPerson, movieID = movieID }, new AjaxOptions { HttpMethod = "Get" })
+                </td>
+            </tr>
+        }
+
+
+    </table>
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+
